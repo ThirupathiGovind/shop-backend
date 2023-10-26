@@ -17,6 +17,13 @@ connectDB()
 
 const app = express()
 
+// Express methods
+// express.json - It parses incoming requests with JSON payloads when the type is "application/json"
+// express.raw - It parses incoming request payloads into a Buffer when the type is "application/octet-stream"
+// express.static - It serves static files.
+// express.text - It parses incoming request payloads into a string.
+// express.text - It parses incoming requests with urlencoded payloads.
+
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
 }
