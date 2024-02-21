@@ -2,11 +2,11 @@
   "name": "MERN SKELETON BACKEND",
   "version": "1.0.0",
   "description": "MERN SKELETON BACKEND",
-  "main": "server.js",
+  "main": "main.js",
   "type": "module",
   "scripts": {
-    "start": "node server",
-    "server": "nodemon server",
+    "start": "node main",
+    "server": "nodemon main",
     "data:import": "node seeder",
     "data:destroy": "node seeder -d"
   },
