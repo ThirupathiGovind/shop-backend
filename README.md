@@ -1,15 +1,12 @@
-
 # ProShop eCommerce Platform
 
 > eCommerce platform built with the MERN stack & Redux.
 
-![screenshot](https://github.com/bradtraversy/proshop_mern/blob/master/uploads/Screen%20Shot%202020-09-29%20at%205.50.52%20PM.png)
+![Screenshot](https://github.com/bradtraversy/proshop_mern/blob/master/uploads/Screen%20Shot%202020-09-29%20at%205.50.52%20PM.png)
 
-## Features  
+## Features
 
-
-
-- Full featured shopping cart
+- Full-featured shopping cart
 - Product reviews and ratings
 - Top products carousel
 - Product pagination
@@ -17,9 +14,9 @@
 - User profile with orders
 - Admin product management
 - Admin user management
-- Admin Order details page
+- Admin order details page
 - Mark orders as delivered option
-- Checkout process (shipping, payment method, etc)
+- Checkout process (shipping, payment method, etc.)
 - PayPal / credit card integration
 - Database seeder (products & users)
 
@@ -27,58 +24,52 @@
 
 ### ES Modules in Node
 
-We use ECMAScript Modules in the backend in this project. Be sure to have at least Node v14.6+ or you will need to add the "--experimental-modules" flag.
+We use ECMAScript Modules in the backend for this project.  
+Make sure you have at least Node v14.6+, or add the `--experimental-modules` flag if using an older version.
 
-Also, when importing a file (not a package), be sure to add .js at the end or you will get a "module not found" error
+When importing a file (not a package), add `.js` at the end to avoid "module not found" errors.
 
-You can also install and setup Babel if you would like
+You can also install and set up Babel if you prefer.
 
-### Env Variables
+### Environment Variables
 
-Create a .env file in then root and add the following
+Create a `.env` file in the root directory and add the following:
 
-```
-NODE_ENV = development
-PORT = 5000
-MONGO_URI = your mongo URI
-JWT_SECRET = 'abc123'
-PAYPAL_CLIENT_ID = your paypal client id
+```env
+NODE_ENV=development
+PORT=5000
+MONGO_URI=your_mongo_URI
+JWT_SECRET=abc123
+PAYPAL_CLIENT_ID=your_paypal_client_id
 ```
 
 ### Install Dependencies
 
-```
+```sh
 npm install
 ```
 
-### Run
+### Run the Server
 
-```
-# Run our node server at localhost:5000
+```sh
 npm start
 ```
 
-### Seed Database
+The Node server will run at [http://localhost:5000](http://localhost:5000).
 
-You can use the following commands to seed the database with some sample users and products as well as destroy all data
+### Seed the Database
 
+Use the following commands to seed the database with sample users and products, or to destroy all data:
+
+```sh
+npm run data:import    # Import sample data
+npm run data:destroy   # Destroy all data
 ```
-# Import data
-npm run data:import
 
-# Destroy data
-npm run data:destroy
-```
+### Sample User Logins
 
-```
-Sample User Logins
-
-admin@example.com (Admin)
-123456
-
-john@example.com (Customer)
-123456
-
-jane@example.com (Customer)
-123456
-```
+| Email              | Role    | Password |
+|--------------------|---------|----------|
+| admin@example.com  | Admin   | 123456   |
+| john@example.com   | Customer| 123456   |
+| jane@example.com   | Customer| 123456   |

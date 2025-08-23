@@ -1,7 +1,7 @@
 {
-  "name": "MERN SKELETON BACKEND",
+  "name": "promern-shop-backend",
   "version": "1.0.0",
-  "description": "MERN SKELETON BACKEND",
+  "description": "Application with Nodejs, Express, MongoDB",
   "main": "main.js",
   "type": "module",
   "scripts": {
