@@ -11,17 +11,23 @@ import {
   updateUser,
 } from '../controllers/userController.js'
 import { protect, admin } from '../middleware/authMiddleware.js'
+import {
+  validateRegister,
+  validateLogin,
+  validateProfileUpdate,
+  validateIdParam,
+} from '../middleware/validationMiddleware.js'
 
-router.route('/').post(registerUser).get(protect, admin, getUsers)
-router.post('/login', authUser)
+router.route('/').post(validateRegister, registerUser).get(protect, admin, getUsers)
+router.post('/login', validateLogin, authUser)
 router
   .route('/profile')
   .get(protect, getUserProfile)
-  .put(protect, updateUserProfile)
+  .put(protect, validateProfileUpdate, updateUserProfile)
 router
   .route('/:id')
-  .delete(protect, admin, deleteUser)
-  .get(protect, admin, getUserById)
-  .put(protect, admin, updateUser)
+  .delete(protect, admin, validateIdParam, deleteUser)
+  .get(protect, admin, validateIdParam, getUserById)
+  .put(protect, admin, validateIdParam, updateUser)
 
 export default router

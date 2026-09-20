@@ -1,41 +1,41 @@
 import path from 'path'
+import crypto from 'crypto'
 import express from 'express'
 import multer from 'multer'
+import { protect, admin } from '../middleware/authMiddleware.js'
+import { validateUpload } from '../middleware/validationMiddleware.js'
+
 const router = express.Router()
 
-const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, 'uploads/')
-  },
-  filename(req, file, cb) {
-    cb(
-      null,
-      `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
-    )
-  },
-})
+const storage = multer.memoryStorage()
 
-function checkFileType(file, cb) {
-  const filetypes = /jpg|jpeg|png/
-  const extname = filetypes.test(path.extname(file.originalname).toLowerCase())
-  const mimetype = filetypes.test(file.mimetype)
+const fileFilter = (req, file, cb) => {
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/webp']
 
-  if (extname && mimetype) {
-    return cb(null, true)
-  } else {
-    cb('Images only!')
+  if (allowedTypes.includes(file.mimetype)) {
+    cb(null, true)
+    return
   }
+
+  cb(new Error('Only JPG, PNG, and WEBP images are allowed.'))
 }
 
 const upload = multer({
   storage,
-  fileFilter: function (req, file, cb) {
-    checkFileType(file, cb)
+  fileFilter,
+  limits: {
+    fileSize: Number(process.env.MAX_UPLOAD_SIZE || 2 * 1024 * 1024),
   },
 })
 
-router.post('/', upload.single('image'), (req, res) => {
-  res.send(`/${req.file.path}`)
+router.post('/', protect, admin, upload.single('image'), validateUpload, (req, res) => {
+  const extension = path.extname(req.file.originalname) || '.png'
+  const fileName = `${crypto.randomBytes(12).toString('hex')}${extension}`
+
+  res.status(201).json({
+    message: 'Image uploaded successfully',
+    image: `/uploads/${fileName}`,
+  })
 })
 
 export default router
