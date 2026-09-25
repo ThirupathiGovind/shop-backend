@@ -8,6 +8,12 @@ node_modules/
 
 # testing
 /coverage
+/.nyc_output
+
+# runtime uploads and local caches
+/uploads/*
+!/uploads/.gitkeep
+.cache/
 
 # misc
 .DS_Store
@@ -22,4 +28,5 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+*.log
 .vscode/settings.json

@@ -1,0 +1,16 @@
+{
+  "servers": {
+    "shop-development-tools": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "${workspaceFolder}/mcp-server/server.js"
+      ],
+      "env": {
+        "SHOP_API_URL": "http://127.0.0.1:5001",
+        "SHOP_FRONTEND_DIRECTORY": "${workspaceFolder}/../shop-frontend",
+        "SHOP_API_TOKEN": "${env:SHOP_API_TOKEN}"
+      }
+    }
+  }
+}
