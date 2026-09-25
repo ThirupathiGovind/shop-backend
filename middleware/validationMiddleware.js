@@ -1,9 +1,18 @@
 import mongoose from 'mongoose'
+import {
+  LOGIN_PASSWORD_MIN_LENGTH,
+  NAME_MIN_LENGTH,
+  PASSWORD_MIN_LENGTH,
+  REVIEW_COMMENT_MIN_LENGTH,
+  REVIEW_RATING_MAX,
+  REVIEW_RATING_MIN,
+  DEFAULT_UPLOAD_SIZE_BYTES,
+} from '../constants.js'
 
 const normalizeEmail = (email = '') => String(email).trim().toLowerCase()
 
 const isStrongPassword = (value = '') => {
-  return value.length >= 8 && /[A-Z]/.test(value) && /[a-z]/.test(value) && /\d/.test(value)
+  return value.length >= PASSWORD_MIN_LENGTH && /[A-Z]/.test(value) && /[a-z]/.test(value) && /\d/.test(value)
 }
 
 const isValidPhone = (value = '') => /^\+?[1-9]\d{7,14}$/.test(String(value).trim())
@@ -21,8 +30,8 @@ const validateIdParam = (req, res, next) => {
 const validateRegister = (req, res, next) => {
   const { name, phoneNumber, email, password } = req.body || {}
 
-  if (!name || !String(name).trim() || String(name).trim().length < 2) {
-    return res.status(400).json({ message: 'Name must be at least 2 characters long.' })
+  if (!name || !String(name).trim() || String(name).trim().length < NAME_MIN_LENGTH) {
+    return res.status(400).json({ message: `Name must be at least ${NAME_MIN_LENGTH} characters long.` })
   }
 
   if (!phoneNumber || !isValidPhone(phoneNumber)) {
@@ -34,7 +43,7 @@ const validateRegister = (req, res, next) => {
   }
 
   if (!password || !isStrongPassword(password)) {
-    return res.status(400).json({ message: 'Password must be at least 8 characters with uppercase, lowercase, and a number.' })
+    return res.status(400).json({ message: `Password must be at least ${PASSWORD_MIN_LENGTH} characters with uppercase, lowercase, and a number.` })
   }
 
   req.body.email = normalizeEmail(email)
@@ -48,8 +57,8 @@ const validateLogin = (req, res, next) => {
     return res.status(400).json({ message: 'A valid email is required.' })
   }
 
-  if (!password || password.length < 8) {
-    return res.status(400).json({ message: 'Password is required.' })
+  if (!password || String(password).length < LOGIN_PASSWORD_MIN_LENGTH) {
+    return res.status(400).json({ message: `Password must be at least ${LOGIN_PASSWORD_MIN_LENGTH} characters.` })
   }
 
   req.body.email = normalizeEmail(email)
@@ -59,8 +68,8 @@ const validateLogin = (req, res, next) => {
 const validateProfileUpdate = (req, res, next) => {
   const { name, phoneNumber, email, password } = req.body || {}
 
-  if (name !== undefined && (!String(name).trim() || String(name).trim().length < 2)) {
-    return res.status(400).json({ message: 'Name must be at least 2 characters long.' })
+  if (name !== undefined && (!String(name).trim() || String(name).trim().length < NAME_MIN_LENGTH)) {
+    return res.status(400).json({ message: `Name must be at least ${NAME_MIN_LENGTH} characters long.` })
   }
 
   if (phoneNumber !== undefined && !isValidPhone(phoneNumber)) {
@@ -72,7 +81,7 @@ const validateProfileUpdate = (req, res, next) => {
   }
 
   if (password !== undefined && !isStrongPassword(password)) {
-    return res.status(400).json({ message: 'Password must be at least 8 characters with uppercase, lowercase, and a number.' })
+    return res.status(400).json({ message: `Password must be at least ${PASSWORD_MIN_LENGTH} characters with uppercase, lowercase, and a number.` })
   }
 
   if (email !== undefined) {
@@ -121,12 +130,12 @@ const validateReview = (req, res, next) => {
   const { rating, comment } = req.body || {}
 
   const parsedRating = Number(rating)
-  if (!Number.isFinite(parsedRating) || parsedRating < 1 || parsedRating > 5) {
-    return res.status(400).json({ message: 'Rating must be between 1 and 5.' })
+  if (!Number.isFinite(parsedRating) || parsedRating < REVIEW_RATING_MIN || parsedRating > REVIEW_RATING_MAX) {
+    return res.status(400).json({ message: `Rating must be between ${REVIEW_RATING_MIN} and ${REVIEW_RATING_MAX}.` })
   }
 
-  if (!comment || !String(comment).trim() || String(comment).trim().length < 3) {
-    return res.status(400).json({ message: 'Review text must be at least 3 characters long.' })
+  if (!comment || !String(comment).trim() || String(comment).trim().length < REVIEW_COMMENT_MIN_LENGTH) {
+    return res.status(400).json({ message: `Review text must be at least ${REVIEW_COMMENT_MIN_LENGTH} characters long.` })
   }
 
   req.body.rating = parsedRating
@@ -172,7 +181,7 @@ const validateUpload = (req, res, next) => {
     return res.status(400).json({ message: 'Only image uploads are allowed.' })
   }
 
-  if (req.file.size > 2 * 1024 * 1024) {
+  if (req.file.size > DEFAULT_UPLOAD_SIZE_BYTES) {
     return res.status(400).json({ message: 'Image size must be under 2MB.' })
   }
 

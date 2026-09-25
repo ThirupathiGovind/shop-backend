@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler'
 import Order from '../models/orderModel.js'
 import Product from '../models/productModel.js'
+import { DEFAULT_SHIPPING_PRICE } from '../constants.js'
 
 const calculateOrderTotals = (orderItems) => {
   const itemsPrice = orderItems.reduce(
@@ -9,7 +10,7 @@ const calculateOrderTotals = (orderItems) => {
   )
 
   const taxRate = Number(process.env.TAX_RATE || 0.1)
-  const shippingPrice = itemsPrice > 0 ? Number(process.env.SHIPPING_PRICE || 10) : 0
+  const shippingPrice = itemsPrice > 0 ? Number(process.env.SHIPPING_PRICE || DEFAULT_SHIPPING_PRICE) : 0
   const taxPrice = Number((itemsPrice * taxRate).toFixed(2))
   const totalPrice = Number((itemsPrice + taxPrice + shippingPrice).toFixed(2))
 
