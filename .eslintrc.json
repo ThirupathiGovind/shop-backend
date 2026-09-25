@@ -1,0 +1,37 @@
+{
+  "env": {
+    "es2022": true,
+    "node": true
+  },
+  "extends": [
+    "airbnb-base"
+  ],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {
+    "class-methods-use-this": "off",
+    "import/extensions": ["error", "always"],
+    "consistent-return": "off",
+    "max-len": ["error", {"code": 140, "ignoreStrings": true, "ignoreTemplateLiterals": true}],
+    "no-console": "off",
+    "no-continue": "off",
+    "no-await-in-loop": "off",
+    "no-restricted-syntax": "off",
+    "no-return-await": "off",
+    "no-underscore-dangle": "off",
+    "no-unused-vars": ["error", {"argsIgnorePattern": "^_"}],
+    "no-param-reassign": ["error", {"props": false}],
+    "prefer-destructuring": "off"
+  },
+  "overrides": [
+    {
+      "files": ["src/mcp-server/**/*.js"],
+      "rules": {
+        "import/extensions": "off",
+        "import/no-unresolved": "off"
+      }
+    }
+  ]
+}

@@ -72,3 +72,20 @@ npm run data:destroy   # Destroy all data
 |--------------------|---------|----------|
 | admin@example.com  | Admin   | 123456   |
 | john@example.com   | Customer| 123456   |
+
+## Quality and AI development tools
+
+Run the backend quality checks with:
+
+```sh
+npm run lint
+npm test
+npm run test:coverage
+npm run quality
+```
+
+Coverage reports authored runtime modules and is being expanded toward the workspace 80% policy. Tests must remain isolated from production data.
+
+Start the development-only MCP server with `npm run mcp`. It exposes read-only health, product, order-diagnostic, and quality-report tools. Configure `SHOP_API_TOKEN` locally before using order diagnostics; never commit that token.
+
+The shared workspace also provides the `Shop Quality` custom agent and backend/frontend testing skills under `.github/`.
