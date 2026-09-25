@@ -37,7 +37,7 @@ Create a `.env` file in the root directory and add the following:
 
 ```env
 NODE_ENV=development
-PORT=5000
+PORT=5001
 MONGO_URI=your_mongo_URI
 JWT_SECRET=abc123
 PAYPAL_CLIENT_ID=your_paypal_client_id
@@ -55,7 +55,7 @@ npm install
 npm start
 ```
 
-The Node server will run at [http://localhost:5000](http://localhost:5000).
+The Node server will run at [http://localhost:5001](http://localhost:5001).
 
 ### Seed the Database
 
@@ -72,4 +72,3 @@ npm run data:destroy   # Destroy all data
 |--------------------|---------|----------|
 | admin@example.com  | Admin   | 123456   |
 | john@example.com   | Customer| 123456   |
-| jane@example.com   | Customer| 123456   |

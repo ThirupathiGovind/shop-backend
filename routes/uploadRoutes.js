@@ -4,6 +4,7 @@ import express from 'express'
 import multer from 'multer'
 import { protect, admin } from '../middleware/authMiddleware.js'
 import { validateUpload } from '../middleware/validationMiddleware.js'
+import { DEFAULT_UPLOAD_SIZE_BYTES } from '../constants.js'
 
 const router = express.Router()
 
@@ -24,7 +25,7 @@ const upload = multer({
   storage,
   fileFilter,
   limits: {
-    fileSize: Number(process.env.MAX_UPLOAD_SIZE || 2 * 1024 * 1024),
+    fileSize: Number(process.env.MAX_UPLOAD_SIZE || DEFAULT_UPLOAD_SIZE_BYTES),
   },
 })
 

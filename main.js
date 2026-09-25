@@ -13,6 +13,16 @@ import productRoutes from './routes/productRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
 import uploadRoutes from './routes/uploadRoutes.js'
+import {
+  API_RATE_LIMIT,
+  AUTH_RATE_LIMIT,
+  DEFAULT_CORS_ORIGIN,
+  DEFAULT_PORT,
+  RATE_LIMIT_WINDOW_MS,
+  REQUEST_BODY_LIMIT,
+  REVIEW_RATE_LIMIT,
+  UPLOAD_RATE_LIMIT,
+} from './constants.js'
 
 dotenv.config()
 
@@ -20,7 +30,7 @@ connectDB()
 
 const app = express()
 const isProduction = process.env.NODE_ENV === 'production'
-const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:3000')
+const allowedOrigins = (process.env.CORS_ORIGIN || DEFAULT_CORS_ORIGIN)
   .split(',')
   .map((origin) => origin.trim())
   .filter(Boolean)
@@ -41,16 +51,16 @@ app.use(
 )
 
 const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: isProduction ? 200 : 500,
+  windowMs: RATE_LIMIT_WINDOW_MS,
+  max: isProduction ? API_RATE_LIMIT.production : API_RATE_LIMIT.development,
   standardHeaders: true,
   legacyHeaders: false,
   message: { message: 'Too many requests, please try again later.' },
 })
 
 const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: isProduction ? 10 : 30,
+  windowMs: RATE_LIMIT_WINDOW_MS,
+  max: isProduction ? AUTH_RATE_LIMIT.production : AUTH_RATE_LIMIT.development,
   standardHeaders: true,
   legacyHeaders: false,
   message: { message: 'Too many auth attempts, please try again later.' },
@@ -60,20 +70,20 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
 }
 
-app.use(express.json({ limit: '1mb' }))
-app.use(express.urlencoded({ extended: true, limit: '1mb' }))
+app.use(express.json({ limit: REQUEST_BODY_LIMIT }))
+app.use(express.urlencoded({ extended: true, limit: REQUEST_BODY_LIMIT }))
 app.use('/api', apiLimiter)
 app.use('/api/users/login', authLimiter)
 app.use('/api/users', authLimiter)
 app.use('/api/products/:id/reviews', rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: isProduction ? 20 : 50,
+  windowMs: RATE_LIMIT_WINDOW_MS,
+  max: isProduction ? REVIEW_RATE_LIMIT.production : REVIEW_RATE_LIMIT.development,
   standardHeaders: true,
   legacyHeaders: false,
 }))
 app.use('/api/upload', rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: isProduction ? 10 : 30,
+  windowMs: RATE_LIMIT_WINDOW_MS,
+  max: isProduction ? UPLOAD_RATE_LIMIT.production : UPLOAD_RATE_LIMIT.development,
   standardHeaders: true,
   legacyHeaders: false,
 }))
@@ -109,7 +119,7 @@ if (process.env.NODE_ENV === 'production') {
 app.use(notFound)
 app.use(errorHandler)
 
-const PORT = Number(process.env.PORT || 5000)
+const PORT = Number(process.env.PORT || DEFAULT_PORT)
 
 app.listen(
   PORT,
