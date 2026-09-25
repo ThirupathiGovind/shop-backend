@@ -2,29 +2,45 @@
   "name": "promern-shop-backend",
   "version": "1.0.0",
   "description": "Application with Nodejs, Express, MongoDB",
-  "main": "main.js",
+  "main": "src/main.js",
   "type": "module",
   "scripts": {
-    "start": "node main",
-    "server": "nodemon main",
-    "data:import": "node seeder",
-    "data:destroy": "node seeder -d"
+    "start": "node src/main.js",
+    "dev": "nodemon src/main.js",
+    "server": "nodemon src/main.js",
+    "data:import": "node src/seeder.js",
+    "data:destroy": "node src/seeder.js -d",
+    "mcp": "node src/mcp-server/server.js",
+    "lint": "eslint .",
+    "test": "node --test",
+    "test:coverage": "c8 --all --exclude='tests/**' --exclude='coverage/**' --exclude='src/main.js' --exclude='src/seeder.js' --exclude='src/data/**' --exclude='src/mcp-server/**' --check-coverage --branches 80 --functions 80 --lines 80 --statements 80 node --test",
+    "quality": "npm run lint && npm run test:coverage"
   },
   "author": "Thirupathi Govindharaj",
   "license": "MIT",
   "dependencies": {
+    "@modelcontextprotocol/server": "^2.1.0",
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
+    "cors": "^2.8.6",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
+    "express-rate-limit": "^8.7.0",
+    "helmet": "^8.3.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.6",
     "morgan": "^1.10.0",
-    "multer": "^1.4.2"
+    "multer": "^1.4.2",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
+    "c8": "^10.1.3",
     "concurrently": "^5.3.0",
-    "nodemon": "^2.0.4"
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.31.0",
+    "nodemon": "^2.0.4",
+    "supertest": "^7.1.4"
   }
 }
